@@ -60,6 +60,7 @@ class CSVHandler(FileSystemEventHandler):
                                         database="is")
 
             cursor = connection.cursor()
+           
 
         
             cursor.execute("INSERT INTO converted_documents (src, file_size, dst) VALUES (%s, %s, %s);", (csv_path, os.stat(xml_path).st_size , xml_path))
@@ -70,7 +71,7 @@ class CSVHandler(FileSystemEventHandler):
 
         # !TODO: we should store the XML document into the imported_documents table
 
-            cursor.execute("INSERT INTO imported_documents (file_name, xml) VALUES (%s, %s);", (csv_path, xml_path))
+            cursor.execute("INSERT INTO imported_documents (file_name, xml, estado) VALUES (%s, %s, 'imported');", (csv_path, xml_path))
 
             connection.commit()
 

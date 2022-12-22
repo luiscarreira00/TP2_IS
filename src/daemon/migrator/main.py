@@ -48,13 +48,35 @@ if __name__ == "__main__":
         if db_dst is None or db_org is None:
             continue
 
+        cursor1 = db_org.cursor()
+        cursor2 = db_dst.cursor()
+
         print("Checking updates...")
         # !TODO: 1- Execute a SELECT query to check for any changes on the table
         # !TODO: 2- Execute a SELECT queries with xpath to retrieve the data we want to store in the relational db
-        mydoc = ElementTree(file='Dados.xml')
+
+        cursor1.execute("SELECT xml from imported_documents")
+
+        result = cursor1.fetchall()
+
+
+        for fileI in result:
+            mydoc = ElementTree(file=open(fileI[0], encoding="UTF8").read() )
+
+            idPlayer = 1
+            for e in mydoc.findall('/Football/Teams/Team/Players//Player@name'):
+                cursor2.execute("INSERT INTO players (id, age) VALUES ({}, {})".format(idPlayer, e.text))
+                idPlayer += 1
+
+
+
         # !TODO: 3- Execute INSERT queries in the destination db
         # !TODO: 4- Make sure we store somehow in the origin database that certain records were already migrated.
         #          Change the db structure if needed.
+
+        cursor1.execute("UPDATE imported_documents SET estado = 'migrated' VALUES (%s, %s);", (csv_path, xml_path))
+
+        db_org.commit()
 
         db_org.close()
         db_dst.close()
