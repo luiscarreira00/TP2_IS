@@ -21,6 +21,7 @@ CREATE TABLE public.players (
 	id              uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
 	name            VARCHAR(250) NOT NULL,
 	age             INT NOT NULL,
+	overall         INT NOT NULL,
 	team_id         uuid,
 	country_id      uuid NOT NULL,
 	created_on      TIMESTAMP NOT NULL DEFAULT NOW(),

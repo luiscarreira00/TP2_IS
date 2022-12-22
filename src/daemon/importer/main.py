@@ -1,12 +1,15 @@
 import asyncio
 import time
 import uuid
+import psycopg2
 
 import os
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler, FileCreatedEvent
 
 from utils.to_xml_converter import CSVtoXMLConverter
+
+listaFicheirosConvertidos = []
 
 def get_csv_files_in_input_folder():
     return [os.path.join(dp, f) for dp, dn, filenames in os.walk(CSV_INPUT_PATH) for f in filenames if
@@ -47,11 +50,72 @@ class CSVHandler(FileSystemEventHandler):
         convert_csv_to_xml(csv_path, xml_path)
         print(f"new xml file generated: '{xml_path}'")
 
+        connection = None
+        cursor = None
+
+        try:
+            connection = psycopg2.connect(user="is",
+                                        password="is",
+                                        host="db-xml",
+                                        database="is")
+
+            cursor = connection.cursor()
+
+        
+            cursor.execute("INSERT INTO converted_documents (src, file_size, dst) VALUES (%s, %s, %s);", (csv_path, os.stat(xml_path).st_size , xml_path))
+
+            connection.commit()
+            
+                
+
         # !TODO: we should store the XML document into the imported_documents table
+
+            cursor.execute("INSERT INTO imported_documents (file_name, xml) VALUES (%s, %s);", (csv_path, xml_path))
+
+            connection.commit()
+
+        except (Exception, psycopg2.Error) as error:
+                    print("Failed to fetch data", error)
+
+        finally:
+            if connection:
+                cursor.close()
+                connection.close()
 
     async def get_converted_files(self):
         # !TODO: you should retrieve from the database the files that were already converted before
-        return []
+
+
+        connection = None
+        cursor = None
+
+        try:
+            connection = psycopg2.connect(user="is",
+                                        password="is",
+                                        host="db-xml",
+                                        database="is")
+
+            cursor = connection.cursor()
+
+        
+            cursor.execute("SELECT src from converted_documents")
+
+
+            result = cursor.fetchall()
+            
+            for file in result:
+                listaFicheirosConvertidos.append(file)
+                
+                
+        except (Exception, psycopg2.Error) as error:
+            print("Failed to fetch data", error)
+
+        finally:
+            if connection:
+                cursor.close()
+                connection.close()
+
+        return listaFicheirosConvertidos
 
     def on_created(self, event):
         if not event.is_directory and event.src_path.endswith(".csv"):
