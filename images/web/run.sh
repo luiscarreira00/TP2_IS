@@ -1,7 +1,7 @@
 #!/bin/bash
 
 npm install;
-
+ 
 rm .env
 touch .env
 echo "REACT_APP_API_ENTITIES_URL=$API_ENTITIES_URL" >> .env
