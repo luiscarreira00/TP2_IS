@@ -61,7 +61,7 @@ if __name__ == "__main__":
 
 
         for fileI in result:
-            mydoc = ElementTree(file=open(fileI[0], encoding="UTF8").read() )
+            mydoc = ElementTree(file=open(fileI[0], encoding="UTF8").read())
 
             idPlayer = 1
             for e in mydoc.findall('/Football/Teams/Team/Players//Player@name'):
