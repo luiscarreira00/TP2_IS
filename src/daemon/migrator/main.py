@@ -1,9 +1,11 @@
 import sys
 import time
+import os
 
 import psycopg2
 from psycopg2 import OperationalError
 from xml.etree.ElementTree import ElementTree
+
 
 
 POLLING_FREQ = int(sys.argv[1]) if len(sys.argv) >= 2 else 60
@@ -30,6 +32,10 @@ def print_psycopg2_exception(ex):
 
 if __name__ == "__main__":
 
+    
+    
+    mydoc = ElementTree(file='fifa.xml')
+
     db_org = psycopg2.connect(host='db-xml', database='is', user='is', password='is')
     db_dst = psycopg2.connect(host='db-rel', database='is', user='is', password='is')
 
@@ -52,29 +58,42 @@ if __name__ == "__main__":
         cursor2 = db_dst.cursor()
 
         print("Checking updates...")
-        # !TODO: 1- Execute a SELECT query to check for any changes on the table
-        # !TODO: 2- Execute a SELECT queries with xpath to retrieve the data we want to store in the relational db
 
-        cursor1.execute("SELECT xml from imported_documents")
+       
+        idPlayer = 1
+        for e in mydoc.findall('./Player/Age'):
+            cursor2.execute("INSERT INTO players (id, age) VALUES ({}, {})".format(idPlayer, e.text))
+            idPlayer += 1
 
-        result = cursor1.fetchall()
+        idPlayer = 1
+        for e in mydoc.findall('./Player/Name'):
+            cursor2.execute("Update players SET name  = {}, updated_on = NOW() WHERE id = {}".format("'" + str(e.text.replace("'", "")) + "'", idPlayer))
+            idPlayer += 1
+
+        idPlayer = 1
+        for e in mydoc.findall('./Player/Overall'):
+            cursor2.execute("Update players SET overall = {}, updated_on = NOW() WHERE id = {}".format(e.text, idPlayer))
+            idPlayer += 1
+        
+        idPlayer = 1
+        for e in mydoc.findall('./Player/Nationality'):
+            cursor2.execute("Update players SET nationality = {}, updated_on = NOW() WHERE id = {}".format( e.text, idPlayer))
+            idPlayer += 1
+
+        idNationality = 1
+        for e in mydoc.findall('./Nationalities/Nationality'):
+            cursor2.execute("INSERT INTO nationalities  VALUES ({}, {})".format(idNationality, "'" + str(e.text.replace("'", "")) + "'"))
+            idNationality += 1
+
+        
+
+        db_dst.commit()
 
 
-        for fileI in result:
-            mydoc = ElementTree(file=open(fileI[0], encoding="UTF8").read())
-
-            idPlayer = 1
-            for e in mydoc.findall('/Football/Teams/Team/Players//Player@name'):
-                cursor2.execute("INSERT INTO players (id, age) VALUES ({}, {})".format(idPlayer, e.text))
-                idPlayer += 1
-
-
-
-        # !TODO: 3- Execute INSERT queries in the destination db
         # !TODO: 4- Make sure we store somehow in the origin database that certain records were already migrated.
         #          Change the db structure if needed.
 
-        cursor1.execute("UPDATE imported_documents SET estado = 'migrated' VALUES (%s, %s);", (csv_path, xml_path))
+        cursor1.execute("UPDATE imported_documents  SET estado = 'migrated', updated_on = NOW() WHERE imported_documents.file_name LIKE '/csv/fifa.csv';")
 
         db_org.commit()
 

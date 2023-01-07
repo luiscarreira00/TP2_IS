@@ -16,12 +16,10 @@ def get_csv_files_in_input_folder():
             os.path.splitext(f)[1] == '.csv']
 
 def generate_unique_file_name(directory):
-    return f"{directory}/{str(uuid.uuid4())}.xml"
+    return f"{directory}/fifa.xml"
 
-def convert_csv_to_xml(in_path, out_path):
-    converter = CSVtoXMLConverter(in_path)
-    file = open(out_path, "w")
-    file.write(converter.to_xml_str())
+def convert_csv_to_xml():
+    CSVtoXMLConverter()
 
 class CSVHandler(FileSystemEventHandler):
     def __init__(self, input_path, output_path):
@@ -47,7 +45,7 @@ class CSVHandler(FileSystemEventHandler):
 
         # we do the conversion
         # !TODO: once the conversion is done, we should updated the converted_documents tables
-        convert_csv_to_xml(csv_path, xml_path)
+        convert_csv_to_xml()
         print(f"new xml file generated: '{xml_path}'")
 
         connection = None
