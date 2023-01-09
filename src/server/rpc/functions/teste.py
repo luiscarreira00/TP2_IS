@@ -160,7 +160,7 @@ def countPlayersFromOverall(overall):
 
 
 
-def countPlayersFromNationality(nationality):
+def countPlayersFromNationality(nationality,listaNacionalidades):
     try:
         connection = psycopg2.connect(user="is",
                                     password="is",
