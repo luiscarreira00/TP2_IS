@@ -2,7 +2,7 @@ import signal, sys
 from xmlrpc.server import SimpleXMLRPCServer
 from xmlrpc.server import SimpleXMLRPCRequestHandler
 
-from functions.teste import convertFile, validateFile, insertBD
+from functions.teste import selectPlayer, validateFile, insertBD
 
 
 PORT = int(sys.argv[1]) if len(sys.argv) >= 2 else 9000
@@ -28,7 +28,7 @@ if __name__ == "__main__":
         signal.signal(signal.SIGINT, signal_handler)
 
         # register both functions
-        server.register_function(convertFile)
+        server.register_function(selectPlayer())
         server.register_function(validateFile)
         server.register_function(insertBD)
 
