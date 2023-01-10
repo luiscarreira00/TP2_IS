@@ -1,6 +1,7 @@
 import sys
 
 from flask import Flask
+import json
 
 PORT = int(sys.argv[1]) if len(sys.argv) >= 2 else 9000
 
@@ -18,14 +19,20 @@ string = "hello world"
 
 @app.route('/api/selectplayer', methods=['GET'])
 def select_player():
-    server.selectPlayer(string)
+    x=server.selectPlayer(string)
+    y=json.load(x)
     return [{
-        "id": "7674fe6a-6c8d-47b3-9a1f-18637771e23b",
-        "name": "Ronaldo",
-        "country": "Portugal",
-        "position": "Striker",
-        "imgUrl": "https://cdn-icons-png.flaticon.com/512/805/805401.png",
-        "number": 7
+        "Name": y["Name"],
+        "Age": y["Age"],
+        "Overall": y["Overall"],
+        "Nationality": y["Nationality"]
+
+        #"id": "7674fe6a-6c8d-47b3-9a1f-18637771e23b",
+        #"name": "Ronaldo",
+        #"country": "Portugal",
+        #"position": "Striker",
+        #"imgUrl": "https://cdn-icons-png.flaticon.com/512/805/805401.png",
+        #"number": 7
     }]
 
 

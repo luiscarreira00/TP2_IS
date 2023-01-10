@@ -1,6 +1,7 @@
 import psycopg2
 import csv
 from xml.etree.ElementTree import ElementTree
+import json
 
 def listaNacionalidade():
    listaNacionalidades = [list]
@@ -44,10 +45,8 @@ def selectPlayer(player):
                                     database="is")
 
         cursor = connection.cursor()
-
-        
-        cursor.execute("SELECT * from players where name like ('player')")
-
+     
+        cursor.execute("SELECT * from players where name like ("+player+")")
 
         result = cursor.fetchall()
         
@@ -55,11 +54,16 @@ def selectPlayer(player):
             print("\n   Name = ", row[0])
             print("   Age = ", row[1])
             print("   Overall = ", row[2])
+            x = '{ "Name":"'+row[0]+'", "Age":"'+row[1]+'", "Overall":"'+row[2]+'"}'
+            data = json.loads(x)
             
             for pais in range(len(listaNacionalidades)):
                 if (str(row[3]) == ('{' + str(pais) + '}')):
                     print("   Nationality = ", ('{' + str(listaNacionalidades[pais]) + '}'))
-                    break  
+                    y='{ "Nationality":"'+str(listaNacionalidades[pais])+'"}'
+                    break
+
+            data.update(y)      
 
     except (Exception, psycopg2.Error) as error:
         print("Failed to fetch data", error)
@@ -69,7 +73,7 @@ def selectPlayer(player):
             cursor.close()
             connection.close()
 
-    return "Jogador listado com sucesso!"
+    return data
 
 
 
