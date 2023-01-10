@@ -28,8 +28,8 @@ if __name__ == "__main__":
         signal.signal(signal.SIGINT, signal_handler)
 
         # register both functions
-        server.register_function(selectPlayer(player,server.register_function(listaNacionalidade))) # player - string do nome de um jogador
-        server.register_function(selectPlayersFromOverall(overall)) # overall - inteiro do overall de um jogador
+        server.register_function(selectPlayer) # player - string do nome de um jogador
+        server.register_function(selectPlayersFromOverall) # overall - inteiro do overall de um jogador
 
         # start the server
         print(f"Starting the RPC Server in port {PORT}...")

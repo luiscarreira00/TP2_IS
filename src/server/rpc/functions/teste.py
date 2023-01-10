@@ -35,24 +35,18 @@ def listaNacionalidade():
 connection = None
 cursor = None
 
-def selectPlayer(player,listaNacionalidades):
+def selectPlayer(player):
+    listaNacionalidades=listaNacionalidade
     try:
         connection = psycopg2.connect(user="is",
                                     password="is",
-                                    host="localhost",
-                                    port="15432",
+                                    host="db-rel",
                                     database="is")
 
         cursor = connection.cursor()
 
         
-        cursor.execute("""SELECT xpath('//Player/Name[text()="%s"]/text()',"xml"),
-                                 xpath('//Player/Name[text()="%s"]/../Age/text()',"xml"),
-                                 xpath('//Player/Name[text()="%s"]/../Overall/text()',"xml"),
-                                 xpath('//Player/Name[text()="%s"]/../Nationality/text()',"xml")
-        
-        
-        from "imported_documents"  where "file_name" ='fifaPlayers'; """ % (player, player, player, player))
+        cursor.execute("SELECT * from players where name like ('player')")
 
 
         result = cursor.fetchall()
@@ -87,8 +81,7 @@ def selectPlayersFromOverall(overall):
     try:
         connection = psycopg2.connect(user="is",
                                     password="is",
-                                    host="localhost",
-                                    port="15432",
+                                    host="db-rel",
                                     database="is")
 
         cursor = connection.cursor()
@@ -160,7 +153,8 @@ def countPlayersFromOverall(overall):
 
 
 
-def countPlayersFromNationality(nationality,listaNacionalidades):
+def countPlayersFromNationality(nationality):
+    listaNacionalidades=listaNacionalidade
     try:
         connection = psycopg2.connect(user="is",
                                     password="is",
@@ -282,59 +276,4 @@ def selectPlayersBetweenOverallAndAge(overall1, overall2, age1, age2):
 
     return "Jogador listado com sucesso!"
 
-
-
-
-
-
-
-menuOptions = {
-    1: 'Listar jogador',
-    2: 'Listar jogadores de determinado overall',
-    3: 'Saber quantos jogadores existem de determinado overall',
-    4: 'Saber quantos jogadores existem de determinada nacionalidade',
-    5: 'Listar jogadores com overall entre determinados valores',
-    6: 'Listar jogadores com overall e idade entre determinados valores',
-    0: 'Sair do programa',
-}
-
-
-
-def menu(option,*args):
-    if option == 1:
-        jogador = input("Insira o nome do jogador pelo qual procura: ")
-        return  selectPlayer(jogador)
-    elif option == 2:
-        overall = input("Insira o overall dos jogadores: ")
-        return  selectPlayersFromOverall(overall)
-    elif option == 3:
-        overall = input("Insira o overall dos jogadores: ")
-        return  countPlayersFromOverall(overall)
-    elif option == 4:
-        nationality = input("Insira a nacionalidade dos jogadores: ")
-        return  countPlayersFromNationality(nationality)
-    elif option == 5:
-        overall1 = input("Insira o overall mínimo: ")
-        overall2 = input("Insira o overall máximo: ")
-        return  selectPlayersBetweenOverall(overall1, overall2)
-    elif option == 6:
-        overall1 = input("Insira o overall mínimo: ")
-        overall2 = input("Insira o overall máximo: ")
-        idade1 = input("Insira a idade mínima: ")
-        idade2 = input("Insira a idade máxima: ")
-        return  selectPlayersBetweenOverallAndAge(overall1, overall2, idade1, idade2)
-    elif option == 0:
-        print('Adeus!')
-        exit()
-    else:
-        print('Opção invalida, por favor escolha uma opção entre 1 a 6')
-
-opcao=100
-
-while (opcao != 0):
-    print("\n\n\nBem vindo á Base de Dados de jogadores do FIFA23!")
-    for key in menuOptions.keys():
-        print(key, '--', menuOptions[key])
-    opcao = int(input('Introduz a opcao pretendida: '))
-    menu(opcao)
 
