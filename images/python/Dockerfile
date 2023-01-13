@@ -23,3 +23,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # run the script
 CMD (sed -i 's/\r$//' ./run.sh) && (chmod +x ./run.sh) && (./run.sh)
+
+RUN pip install requests
+RUN pip install pycountry
+RUN pip install geojson
