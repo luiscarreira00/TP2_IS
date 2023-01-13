@@ -6,6 +6,7 @@ import requests
 import pycountry
 from geojson import loads
 import json
+from shapely.geometry import shape
 
 POLLING_FREQ = int(sys.argv[1]) if len(sys.argv) >= 2 else 60
 ENTITIES_PER_ITERATION = int(sys.argv[2]) if len(sys.argv) >= 3 else 10
@@ -60,20 +61,24 @@ if __name__ == "__main__":
             # Do something with the row
             print(str(row[0]))
             country = pycountry.countries.lookup(str(row[0]))
-            url = " https://nominatim.openstreetmap.org/search?format=json&country={}".format(country.alpha_2)
+            print(country.alpha_2)
+            url = f"https://nominatim.openstreetmap.org/search?format=geojson&polygon_geojson=1&country={country.alpha_2}"
             response = requests.get(url, headers=headers)
 
             data = response.json()
-            
-            json_string = json.dumps(data)
+            if 'features' in data and len(data['features']) > 0:
+                feature = data['features'][0]
+                if feature['geometry']['type'] == 'Polygon' or feature['geometry']['type'] == 'MultiPolygon':
+                    # Convert the GeoJSON feature to a shapely Polygon or MultiPolygon
+                    geo = shape(feature['geometry'])
+                    # Convert the shapely Polygon or MultiPolygon to a WKT string
+                    wkt = geo.wkt
+                    # Execute an SQL query to update the "nationalities" table
+                    cur.execute("UPDATE nationalities SET geom = ST_SetSRID(ST_GeomFromText(%s),4326), updated_on = NOW() WHERE name = %s", (wkt, str(row[0])))
+                    db_dst.commit()
 
-            # Convert to geojson
-            geom = loads(json_string)
 
-            cur.execute("Update nationalities SET geom = (%s) WHERE name = %s", ((json.dumps(geom),), str(row[0])))
-
-
-        db_dst.commit()
+        
         db_dst.close()
 
 

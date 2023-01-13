@@ -27,3 +27,4 @@ CMD (sed -i 's/\r$//' ./run.sh) && (chmod +x ./run.sh) && (./run.sh)
 RUN pip install requests
 RUN pip install pycountry
 RUN pip install geojson
+RUN pip install shapely
