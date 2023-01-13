@@ -59,9 +59,42 @@ if __name__ == "__main__":
         # Iterate over the rows
         for row in rows:
             # Do something with the row
-            print(str(row[0]))
-            country = pycountry.countries.lookup(str(row[0]))
-            print(country.alpha_2)
+            if(str(row[0])=="England" or str(row[0])=="Scotland" or str(row[0])=="Wales" or str(row[0])=="Northern Ireland"): 
+                country = pycountry.countries.lookup("United Kingdom")
+            
+            elif(str(row[0])=="Korea Republic"):
+                country = pycountry.countries.lookup("Korea, Republic of")
+            elif(str(row[0])=="Côte dIvoire"):
+                country = pycountry.countries.lookup("Côte d'Ivoire")
+            elif(str(row[0])=="Russia"):
+                country = pycountry.countries.lookup("Russian Federation")
+            elif(str(row[0])=="Congo DR"):
+                country = pycountry.countries.lookup("Congo")
+            elif(str(row[0])=="China PR"):
+                country = pycountry.countries.lookup("China")
+            elif(str(row[0])=="Iran"):
+                continue
+            elif(str(row[0])=="Republic of Ireland"):
+                country = pycountry.countries.lookup("Ireland")
+            elif(str(row[0])=="Cape Verde Islands"):
+                country = pycountry.countries.lookup("Cabo Verde")
+            elif(str(row[0])=="Syria"):
+                country = pycountry.countries.lookup("Syrian Arab Republic")
+            elif(str(row[0])=="Guinea Bissau"):
+                country = pycountry.countries.lookup("Guinea-Bissau")
+            elif(str(row[0])=="Curacao"):
+                country = pycountry.countries.lookup("Curaçao")
+            elif(str(row[0])=="Palestine"):
+                country = pycountry.countries.lookup("Palestine, State of")
+            elif(str(row[0])=="Korea DPR"):
+                continue
+            elif(str(row[0])=="Chinese Taipei"):
+                continue
+            elif(str(row[0])=="Kosovo"):
+                continue
+            else:
+                country = pycountry.countries.lookup(str(row[0]))
+  
             url = f"https://nominatim.openstreetmap.org/search?format=geojson&polygon_geojson=1&country={country.alpha_2}"
             response = requests.get(url, headers=headers)
 

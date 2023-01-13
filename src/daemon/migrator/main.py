@@ -62,7 +62,7 @@ if __name__ == "__main__":
        
         idPlayer = 1
         for e in mydoc.findall('./Player/Age'):
-            cursor2.execute("INSERT INTO players (id, age) VALUES ({}, {})".format(idPlayer, e.text))
+            cursor2.execute("INSERT INTO players (id, age) VALUES ({}, {}) ON CONFLICT DO NOTHING".format(idPlayer, e.text))
             idPlayer += 1
 
         idPlayer = 1
@@ -82,7 +82,7 @@ if __name__ == "__main__":
 
         idNationality = 1
         for e in mydoc.findall('./Nationalities/Nationality'):
-            cursor2.execute("INSERT INTO nationalities  VALUES ({}, {})".format(idNationality, "'" + str(e.text.replace("'", "")) + "'"))
+            cursor2.execute("INSERT INTO nationalities  VALUES ({}, {}) ON CONFLICT DO NOTHING".format(idNationality, "'" + str(e.text.replace("'", "")) + "'"))
             idNationality += 1
 
         
