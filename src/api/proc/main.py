@@ -9,11 +9,12 @@ app = Flask(__name__)
 app.config["DEBUG"] = True
 
 import xmlrpc.client
-
 print("connecting to server...")
-server = xmlrpc.client.ServerProxy('http://rpc-server:9000')
-
-string = "hello world"
+string = "Cristiano Ronaldo"
+with xmlrpc.client.ServerProxy("http://rpc-server:9000/") as proxy:
+    print("teste dentro do cliente")
+    print("3 is even: %s" % str(proxy.is_even(3)))
+    print("100 is even: %s" % str(proxy.is_even(100)))
 
 
 
