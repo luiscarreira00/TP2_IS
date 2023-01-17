@@ -75,17 +75,17 @@ if __name__ == "__main__":
             cursor2.execute("Update players SET overall = {}, updated_on = NOW() WHERE id = {}".format(e.text, idPlayer))
             idPlayer += 1
         
-        idPlayer = 1
-        for e in mydoc.findall('./Player/Nationality'):
-            cursor2.execute("Update players SET nationality = {}, updated_on = NOW() WHERE id = {}".format( e.text, idPlayer))
-            idPlayer += 1
-
         idNationality = 1
         for e in mydoc.findall('./Nationalities/Nationality'):
             cursor2.execute("INSERT INTO nationalities  VALUES ({}, {}) ON CONFLICT DO NOTHING".format(idNationality, "'" + str(e.text.replace("'", "")) + "'"))
             idNationality += 1
 
-        
+        idPlayer = 1
+        for e in mydoc.findall('./Player/Nationality'):
+            cursor2.execute("Update players SET nationality = {}, updated_on = NOW() WHERE id = {}".format( e.text, idPlayer))
+            idPlayer += 1
+
+ 
 
         db_dst.commit()
 

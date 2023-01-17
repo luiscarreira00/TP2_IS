@@ -21,4 +21,9 @@ CREATE TABLE public.players (
 	updated_on      TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
+ALTER TABLE players
+    ADD CONSTRAINT players_countries_id_fk
+        FOREIGN KEY (nationality) REFERENCES nationalities
+            ON DELETE CASCADE;
+
 

@@ -103,7 +103,7 @@ class CSVHandler(FileSystemEventHandler):
             result = cursor.fetchall()
             
             for file in result:
-                listaFicheirosConvertidos.append(file)
+                listaFicheirosConvertidos.append(file[0])
                 
                 
         except (Exception, psycopg2.Error) as error:
@@ -113,6 +113,8 @@ class CSVHandler(FileSystemEventHandler):
             if connection:
                 cursor.close()
                 connection.close()
+        
+        print(listaFicheirosConvertidos)
 
         return listaFicheirosConvertidos
 
