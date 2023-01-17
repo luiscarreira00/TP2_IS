@@ -11,13 +11,6 @@ import {
     TableRow
 } from "@mui/material";
 
-fetch('/data')
-  .then(response => response.json())
-  .then(data => {
-    const names = data.map(item => item.name);
-    console.log(names); // This will print an array with the "name" property of each object in the array
-  });
-
 
 const DEMO_PLAYERS = [
    // {"id": lista[0].value, "name" : lista[0].name, "age":lista[0].value},
@@ -59,17 +52,18 @@ function Players() {
     const PAGE_SIZE = 10;
     const [page, setPage] = useState(1);
     const [data, setData] = useState(null);
-    const [maxDataSize, setMaxDataSize] = useState(DEMO_PLAYERS.length);
+    const [maxDataSize, setMaxDataSize] = useState(0);
 
     useEffect(() => {
-        //!FIXME: this is to simulate how to retrieve data from the server
-        //!FIXME: the entities server URL is available on process.env.REACT_APP_API_ENTITIES_URL
-        setData(null);
-        setTimeout(() => {
-            console.log(`fetching from ${process.env.REACT_APP_API_ENTITIES_URL}`)
-            setData(DEMO_PLAYERS.filter((item, index) => Math.floor(index / PAGE_SIZE) === (page - 1)));
-        }, 500);
-    }, [page])
+        fetch('/api/data')
+          .then(response => response.json())
+          .then(data => {
+            setData(data);
+            setMaxDataSize(data.length);
+          });
+    }, []);
+
+
 
     return (
         <>
@@ -87,17 +81,17 @@ function Players() {
                     <TableBody>
                         {
                             data ?
-                                data.map((row) => (
+                                data.map((item) => (
                                     <TableRow
-                                        key={row.id}
+                                        key={item.name}
                                         style={{background: "gray", color: "black"}}
                                     >
-                                        <TableCell component="td" align="center">{row.id}</TableCell>
+                                        <TableCell component="td" align="center">{item.name}</TableCell>
                                         <TableCell component="td" scope="row">
-                                            {row.name}
+                                            {item.name}
                                         </TableCell>
                                         <TableCell component="td" align="center" scope="row">
-                                            {row.age}
+                                            {item.value}
                                         </TableCell>
                                     </TableRow>
                                 ))

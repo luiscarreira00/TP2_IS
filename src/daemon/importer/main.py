@@ -113,8 +113,6 @@ class CSVHandler(FileSystemEventHandler):
             if connection:
                 cursor.close()
                 connection.close()
-        
-        print(listaFicheirosConvertidos)
 
         return listaFicheirosConvertidos
 

@@ -86,7 +86,7 @@ app = Flask(__name__)
 app.config["DEBUG"] = True
 
 data = [{'name': 'example1', 'value': 1}, {'name': 'example2', 'value': 2}]
-@app.route('/data', methods=['GET'])
+@app.route('/api/data', methods=['GET'])
 def get_data():
     return jsonify(data)
 
