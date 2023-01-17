@@ -9,6 +9,10 @@ import csv
 from xml.etree.ElementTree import ElementTree
 import json
 
+def is_even(n):
+    print("teste no server")
+    return n % 2 == 0
+
 def listaNacionalidade():
    listaNacionalidades = [list]
 
@@ -51,8 +55,8 @@ def selectPlayer(player):
                                     database="is")
 
         cursor = connection.cursor()
-     
-        cursor.execute("SELECT * from players where name like ("+player+")")
+
+        cursor.execute("SELECT * from players where name like ({})".format(player))
 
         result = cursor.fetchall()
         
@@ -83,7 +87,6 @@ def selectPlayer(player):
 
 
 
-
 PORT = int(sys.argv[1]) if len(sys.argv) >= 2 else 9000
 
 if __name__ == "__main__":
@@ -93,24 +96,22 @@ if __name__ == "__main__":
     with SimpleXMLRPCServer(('0.0.0.0', PORT), requestHandler=RequestHandler) as server:
         server.register_introspection_functions()
 
-        def signal_handler(signum, frame):
-            print("received signal")
-            server.server_close()
+       # def signal_handler(signum, frame):
+        #    print("received signal")
+       #     server.server_close()
 
             # perform clean up, etc. here...
-            print("exiting, gracefully")
-            sys.exit(0)
+        #    print("exiting, gracefully")
+        #    sys.exit(0)
 
         # signals
-        signal.signal(signal.SIGTERM, signal_handler)
-        signal.signal(signal.SIGHUP, signal_handler)
-        signal.signal(signal.SIGINT, signal_handler)
+        #signal.signal(signal.SIGTERM, signal_handler)
+        #signal.signal(signal.SIGHUP, signal_handler)
+        #signal.signal(signal.SIGINT, signal_handler)
 
         # register both functions
-        server.register_function  
-        def is_even(n):
-            return n % 2 == 0
-        
+
+        server.register_function(is_even, "iseven")
         server.register_function(selectPlayer,"select_player") # player - string do nome de um jogador
         server.register_function(selectPlayersFromOverall) # overall - inteiro do overall de um jogador
 

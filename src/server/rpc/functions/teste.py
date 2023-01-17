@@ -3,6 +3,9 @@ import csv
 from xml.etree.ElementTree import ElementTree
 import json
 
+
+
+
 def listaNacionalidade():
    listaNacionalidades = [list]
 
