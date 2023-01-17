@@ -11,7 +11,16 @@ import {
     TableRow
 } from "@mui/material";
 
+fetch('/data')
+  .then(response => response.json())
+  .then(data => {
+    const names = data.map(item => item.name);
+    console.log(names); // This will print an array with the "name" property of each object in the array
+  });
+
+
 const DEMO_PLAYERS = [
+   // {"id": lista[0].value, "name" : lista[0].name, "age":lista[0].value},
     {"id": "31", "name": "Alexis Sanchez", "age": "33"},
     {"id": "39", "name": "Ander Herrera", "age": "33"},
     {"id": "45", "name": "Andreas Pereira", "age": "26"},
