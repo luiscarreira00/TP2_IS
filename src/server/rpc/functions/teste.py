@@ -121,8 +121,7 @@ def countPlayersFromOverall(overall):
     try:
         connection = psycopg2.connect(user="is",
                                     password="is",
-                                    host="localhost",
-                                    port="15432",
+                                    host="db-rel",
                                     database="is")
 
         cursor = connection.cursor()
@@ -162,8 +161,7 @@ def countPlayersFromNationality(nationality):
     try:
         connection = psycopg2.connect(user="is",
                                     password="is",
-                                    host="localhost",
-                                    port="15432",
+                                    host="db-rel",
                                     database="is")
 
         cursor = connection.cursor()
@@ -207,8 +205,7 @@ def selectPlayersBetweenOverall(overall1, overall2):
     try:
         connection = psycopg2.connect(user="is",
                                     password="is",
-                                    host="localhost",
-                                    port="15432",
+                                    host="db-rel",
                                     database="is")
 
         cursor = connection.cursor()
@@ -246,8 +243,7 @@ def selectPlayersBetweenOverallAndAge(overall1, overall2, age1, age2):
     try:
         connection = psycopg2.connect(user="is",
                                     password="is",
-                                    host="localhost",
-                                    port="15432",
+                                    host="db-rel",
                                     database="is")
 
         cursor = connection.cursor()
