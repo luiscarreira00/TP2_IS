@@ -60,6 +60,7 @@ function Players() {
           .then(data => {
             setData(data);
             setMaxDataSize(data.length);
+            console.log(data);
           });
     }, []);
 

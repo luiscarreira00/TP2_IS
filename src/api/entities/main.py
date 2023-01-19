@@ -3,6 +3,7 @@ import psycopg2
 from psycopg2 import OperationalError
 
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 
 from entities import Team
 
@@ -38,7 +39,7 @@ def print_psycopg2_exception(ex):
     print("pgcode:", ex.pgcode, "\n")
 
 
-if __name__ == "__main__":
+
 
     db_dst = psycopg2.connect(host='db-rel', database='is', user='is', password='is')
 
@@ -83,6 +84,7 @@ teams = [
 ]
 
 app = Flask(__name__)
+CORS(app)
 app.config["DEBUG"] = True
 
 data = [{'name': 'example1', 'value': 1}, {'name': 'example2', 'value': 2}]
