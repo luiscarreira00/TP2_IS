@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 
 
-function Players() {
+function Countries() {
 
     const PAGE_SIZE = 10;
     const [page, setPage] = useState(1);
@@ -20,10 +20,10 @@ function Players() {
     const [maxDataSize, setMaxDataSize] = useState(0);
 
     useEffect(() => {
-        fetch('http://localhost:20001/api/data')
+        fetch('http://localhost:20001/api/getPais')
           .then(response => response.json())
           .then(data => {
-            let keys = ["id", "name", "age", "overall"];
+            let keys = ["id", "name"];
             let result = data.map(item => item.reduce((acc, val, i) => Object.assign(acc, { [keys[i]]: val }), {}));
             console.log(result);
             setData(result);
@@ -35,16 +35,14 @@ function Players() {
 
     return (
         <>
-            <h1>Players</h1>
+            <h1>Countries</h1>
 
             <TableContainer component={Paper}>
                 <Table sx={{minWidth: 650}} aria-label="simple table">
                     <TableHead>
                         <TableRow>
                             <TableCell component="th" width={"1px"} align="center">ID</TableCell>
-                            <TableCell>Player Name</TableCell>
-                            <TableCell align="center">Age</TableCell>
-                            <TableCell align="center">Overall</TableCell>
+                            <TableCell align="center">Country Name</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -56,14 +54,8 @@ function Players() {
                                         style={{background: "gray", color: "black"}}
                                     >
                                         <TableCell component="td" align="center">{item.id}</TableCell>
-                                        <TableCell component="td" scope="row">
+                                        <TableCell component="td" align="center" scope="row">
                                             {item.name}
-                                        </TableCell>
-                                        <TableCell component="td" align="center" scope="row">
-                                            {item.age}
-                                        </TableCell>
-                                        <TableCell component="td" align="center" scope="row">
-                                            {item.overall}
                                         </TableCell>
                                     </TableRow>
                                 ))
@@ -96,4 +88,4 @@ function Players() {
     );
 }
 
-export default Players;
+export default Countries;

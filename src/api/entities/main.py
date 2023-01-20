@@ -20,6 +20,8 @@ from entities import Team
 
 PORT = int(sys.argv[1]) if len(sys.argv) >= 2 else 9000
 
+
+
 def print_psycopg2_exception(ex):
     # get details about the exception
     err_type, err_obj, traceback = sys.exc_info()
@@ -40,7 +42,7 @@ def print_psycopg2_exception(ex):
 
 
 
-
+def getJogadores():
     db_dst = psycopg2.connect(host='db-rel', database='is', user='is', password='is')
 
     while True:
@@ -55,29 +57,44 @@ def print_psycopg2_exception(ex):
             continue
 
         cursor = db_dst.cursor()
-
-        #print("Checking data...")
         
         listaJogadores=[]
 
-        cursor.execute("Select id, name from players")
+        cursor.execute("Select id, name, age, overall from players")
         
 
         results = cursor.fetchall()
             
         for result in results:
-            listaJogadores.append(result)
-        #data = [row.__dict__ for row in results]
+            listaJogadores.append(result)  
+        return listaJogadores
         
-        #for row in data:
-        #    row.pop('_sa_instance_state')
+def getPais():
+    db_dst = psycopg2.connect(host='db-rel', database='is', user='is', password='is')
 
-       # print("jogador.........")
-       # for element in listaJogadores:
-        #    if element[0]==3:
-        #        print(element[1])
-        #print(listaJogadores)    
+    while True:
+        db_dst = None
+
+        try:
+           db_dst = psycopg2.connect(host='db-rel', database='is', user='is', password='is')
+        except OperationalError as err:
+            print_psycopg2_exception(err)
+
+        if db_dst is None:
+            continue
+
+        cursor = db_dst.cursor()
         
+        listaPais=[]
+
+        cursor.execute("Select id, name from nationalities")
+        
+
+        results = cursor.fetchall()
+            
+        for result in results:
+            listaPais.append(result)  
+        return listaPais        
 # set of all teams
 # !TODO: replace by database access
 teams = [
@@ -87,10 +104,15 @@ app = Flask(__name__)
 CORS(app)
 app.config["DEBUG"] = True
 
-data = [{'name': 'example1', 'value': 1}, {'name': 'example2', 'value': 2}]
+@app.route('/api/getPais', methods=['GET'])
+def get_data():
+    listaPais=getPais()
+    return jsonify(listaPais)
+
 @app.route('/api/data', methods=['GET'])
 def get_data():
-    return jsonify(data)
+    listaJogadores=getJogadores()
+    return jsonify(listaJogadores)
 
 @app.route('/api/teams/', methods=['GET'])
 def get_teams():

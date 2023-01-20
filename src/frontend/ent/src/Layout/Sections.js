@@ -1,4 +1,5 @@
 import Players from "../Tables/Players";
+import Country from "../Tables/Country";
 
 const Sections = [
 
@@ -9,9 +10,9 @@ const Sections = [
     },
 
     {
-        id: "teams",
-        label: "Teams",
-        content: <h1>Teams - Work in progresss</h1>
+        id: "country",
+        label: "Country",
+        content: <Countries/>
     },
 
     {
