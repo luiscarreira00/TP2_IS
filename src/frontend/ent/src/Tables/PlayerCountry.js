@@ -9,7 +9,7 @@ import {Box, CircularProgress, Container, FormControl, InputLabel, MenuItem, Sel
 function JogadorPais() {
     
     const [selectedCountry, setSelectedCountry] = useState("");
-    const [listaJP, setLista] = useState(null);
+    const [result, setLista] = useState(null);
     const [procData, setProcData] = useState(null);
 
     useEffect(() => {fetch('http://localhost:20001/api/getJogadorPais')
@@ -17,17 +17,17 @@ function JogadorPais() {
     .then(data => {
       let keys = ["id", "name", "age", "overall", "country"];
       let result = data.map(item => item.reduce((acc, val, i) => Object.assign(acc, { [keys[i]]: val }), {}));
-      listaJP=result
-      setLista(result)
+      console.log(result);
+      setLista(result);
     });
     setProcData(null);
         if (selectedCountry) {
             setTimeout(() => {
-                setProcData(listaJP.filter(t => t.country === selectedCountry));
+                setProcData(result.filter(t => t.country === selectedCountry));
             }, 500);
         }
     }, [selectedCountry])
-    const countries = [...new Set(listaJP.map(element => element.country))].sort();
+    const countries = [...new Set(result.map(element => element.country))].sort();
     return (
         <>
             <h1>Jogadores de País</h1>
