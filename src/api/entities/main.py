@@ -55,29 +55,29 @@ def getJogadoresDePais():
         if db_dst is None:
             continue
 
-        cursor = db_dst.cursor()
-        cursor1 = db_dst.cursor()
+        cursorJog = db_dst.cursor()
+        cursorNat = db_dst.cursor()
         
-        listaJogadores=[]
-        listaPais=[]
+        listaJogadores2=[]
+        listaPais2=[]
 
-        cursor.execute("Select id, name, age, overall from players")
-        cursor1.execute("Select id, name from nationalities")
+        cursorJog.execute("Select id, name, age, overall from players")
+        cursorNat.execute("Select id, name from nationalities")
         
 
-        results = cursor.fetchall()
-        results1 = cursor1.fetchall()
+        resultsJog = cursorJog.fetchall()
+        resultsNat = cursorNat.fetchall()
             
-        for result in results:
-            listaJogadores.append(result)  
-        for result1 in results1:
-            listaPais.append(result1)      
-        for i in range(len(listaJogadores)):
-            for j in range(len(listaPais)):
-                if listaJogadores[i][4] == listaPais[j][0]:
-                    listaJogadores[i][4] = listaPais[j][1]
+        for resultJog in resultsJog:
+            listaJogadores2.append(resultJog)  
+        for resultNat in resultsNat:
+            listaPais2.append(resultNat)      
+        for h in range(len(listaJogadores2)):
+            for u in range(len(listaPais2)):
+                if listaJogadores2[h][4] == listaPais2[u][0]:
+                    listaJogadores2[h][4] = listaPais2[u][1]
     
-        return listaJogadores
+        return listaJogadores2
 
 
 def getJogadores():
@@ -121,18 +121,19 @@ def getPais():
         if db_dst is None:
             continue
 
-        cursor = db_dst.cursor()
+        cursor2 = db_dst.cursor()
         
         listaPais=[]
 
-        cursor.execute("Select id, name from nationalities")
+        cursor2.execute("Select id, name from nationalities")
         
 
-        results = cursor.fetchall()
+        results2 = cursor2.fetchall()
             
-        for result in results:
-            listaPais.append(result)  
-        return listaPais        
+        for result2 in results2:
+            listaPais.append(result2)  
+        return listaPais
+
 # set of all teams
 # !TODO: replace by database access
 teams = [
@@ -143,31 +144,24 @@ CORS(app)
 app.config["DEBUG"] = True
 
 @app.route('/api/getJogadorPais', methods=['GET'])
-def get_data():
-    listaJogadorPais=getJogadoresDePais()
-    return jsonify(listaJogadorPais)
+def get_data2():
+    listaJogadores2=getJogadores()
+    listaPais2=getPais()
+    for h in range(len(listaJogadores2)):
+            for u in range(len(listaPais2)):
+                if listaJogadores2[h][4] == listaPais2[u][0]:
+                    listaJogadores2[h][4] = listaPais2[u][1]
+    return jsonify(listaJogadores2)
 
 @app.route('/api/getPais', methods=['GET'])
-def get_data():
+def get_data1():
     listaPais=getPais()
     return jsonify(listaPais)
 
 @app.route('/api/data', methods=['GET'])
 def get_data():
-    listaJogadores=getJogadores()
-    return jsonify(listaJogadores)
-
-@app.route('/api/teams/', methods=['GET'])
-def get_teams():
-    return jsonify([team.__dict__ for team in teams])
-
-
-@app.route('/api/teams/', methods=['POST'])
-def create_team():
-    data = request.get_json()
-    team = Team(name=data['name'])
-    teams.append(team)
-    return jsonify(team.__dict__), 201
+    listaJogadores1=getJogadores()
+    return jsonify(listaJogadores1)
 
 
 if __name__ == '__main__':

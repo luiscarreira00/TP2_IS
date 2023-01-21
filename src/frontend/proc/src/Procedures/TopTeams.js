@@ -24,7 +24,7 @@ const COUNTRIES = [...new Set(DEMO_TEAMS.map(team => team.country))];
 function TopTeams() {
 
     const [selectedCountry, setSelectedCountry] = useState("");
-
+    
     const [procData, setProcData] = useState(null);
     const [gqlData, setGQLData] = useState(null);
 
