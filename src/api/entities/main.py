@@ -41,6 +41,44 @@ def print_psycopg2_exception(ex):
     print("pgcode:", ex.pgcode, "\n")
 
 
+def getJogadoresDePais():
+    db_dst = psycopg2.connect(host='db-rel', database='is', user='is', password='is')
+
+    while True:
+        db_dst = None
+
+        try:
+           db_dst = psycopg2.connect(host='db-rel', database='is', user='is', password='is')
+        except OperationalError as err:
+            print_psycopg2_exception(err)
+
+        if db_dst is None:
+            continue
+
+        cursor = db_dst.cursor()
+        cursor1 = db_dst.cursor()
+        
+        listaJogadores=[]
+        listaPais=[]
+
+        cursor.execute("Select id, name, age, overall from players")
+        cursor1.execute("Select id, name from nationalities")
+        
+
+        results = cursor.fetchall()
+        results1 = cursor1.fetchall()
+            
+        for result in results:
+            listaJogadores.append(result)  
+        for result1 in results1:
+            listaPais.append(result1)      
+        for i in range(len(listaJogadores)):
+            for j in range(len(listaPais)):
+                if listaJogadores[i][4] == listaPais[j][0]:
+                    listaJogadores[i][4] = listaPais[j][1]
+    
+        return listaJogadores
+
 
 def getJogadores():
     db_dst = psycopg2.connect(host='db-rel', database='is', user='is', password='is')
@@ -103,6 +141,11 @@ teams = [
 app = Flask(__name__)
 CORS(app)
 app.config["DEBUG"] = True
+
+@app.route('/api/getJogadorPais', methods=['GET'])
+def get_data():
+    listaJogadorPais=getJogadoresDePais()
+    return jsonify(listaJogadorPais)
 
 @app.route('/api/getPais', methods=['GET'])
 def get_data():

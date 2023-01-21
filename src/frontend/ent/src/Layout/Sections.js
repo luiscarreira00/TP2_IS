@@ -1,5 +1,6 @@
 import Players from "../Tables/Players";
-import Country from "../Tables/Country";
+import Countries from "../Tables/Country";
+import JogadorPais from "../Tables/PlayerCountry";
 
 const Sections = [
 
@@ -16,9 +17,9 @@ const Sections = [
     },
 
     {
-        id: "countries",
-        label: "Countries",
-        content: <h1>Countries - Work in progress</h1>
+        id: "playerCountry",
+        label: "playerCountry",
+        content: <JogadorPais/>
     }
 
 ];
