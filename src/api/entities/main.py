@@ -61,7 +61,7 @@ def getJogadoresDePais():
         listaJogadores2=[]
         listaPais2=[]
 
-        cursorJog.execute("Select id, name, age, overall from players")
+        cursorJog.execute("Select id, name, age, overall, nationality from players")
         cursorNat.execute("Select id, name from nationalities")
         
 
@@ -145,12 +145,7 @@ app.config["DEBUG"] = True
 
 @app.route('/api/getJogadorPais', methods=['GET'])
 def get_data2():
-    listaJogadores2=getJogadores()
-    listaPais2=getPais()
-    for h in range(len(listaJogadores2)):
-            for u in range(len(listaPais2)):
-                if listaJogadores2[h][4] == listaPais2[u][0]:
-                    listaJogadores2[h][4] = listaPais2[u][1]
+    listaJogadores2=getJogadoresDePais()
     return jsonify(listaJogadores2)
 
 @app.route('/api/getPais', methods=['GET'])
