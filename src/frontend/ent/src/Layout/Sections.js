@@ -19,7 +19,7 @@ const Sections = [
     {
         id: "playerCountry",
         label: "playerCountry",
-        content: <JogadorPais/>
+        content: <PlayerCountry/>
     }
 
 ];

@@ -6,7 +6,7 @@ import {Box, CircularProgress, Container, FormControl, InputLabel, MenuItem, Sel
 
 
 
-function JogadorPais() {
+function PlayerCountry() {
     
     const [selectedCountry, setSelectedCountry] = useState("");
     const [result, setLista] = useState(null);
@@ -78,5 +78,5 @@ function JogadorPais() {
     );
 }
 
-export default JogadorPais;
+export default PlayerCountry;
 

@@ -72,12 +72,13 @@ def getJogadoresDePais():
             listaJogadores2.append(resultJog)  
         for resultNat in resultsNat:
             listaPais2.append(resultNat)      
+        new_listaJogadores2 = []
         for h in range(len(listaJogadores2)):
             for u in range(len(listaPais2)):
                 if listaJogadores2[h][4] == listaPais2[u][0]:
-                    listaJogadores2[h][4] = listaPais2[u][1]
-    
-        return listaJogadores2
+                    new_listaJogadores2.append(list(listaJogadores2[h][:4])+[listaPais2[u][1]])
+            
+        return new_listaJogadores2
 
 
 def getJogadores():
