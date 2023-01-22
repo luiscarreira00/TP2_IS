@@ -1,6 +1,6 @@
 import Players from "../Tables/Players";
 import Countries from "../Tables/Country";
-import JogadorPais from "../Tables/PlayerCountry";
+import PlayerCountry from "../Tables/PlayerCountry";
 
 const Sections = [
 
