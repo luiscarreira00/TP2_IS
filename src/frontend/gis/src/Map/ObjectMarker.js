@@ -1,14 +1,12 @@
 import {Avatar, List, ListItem, ListItemIcon, ListItemText} from "@mui/material";
 import FlagIcon from '@mui/icons-material/Flag';
 import PictureInPictureAltIcon from '@mui/icons-material/PictureInPictureAlt';
-import ContactsIcon from '@mui/icons-material/Contacts';
 import React from "react";
 import {Marker, Popup} from 'react-leaflet';
 import {icon as leafletIcon, point} from "leaflet";
 
 const LIST_PROPERTIES = [
     {"key": "country", label: "Country", Icon: FlagIcon},
-    {"key": "number", label: "Shirt Number", Icon: ContactsIcon},
     {"key": "position", label: "Position", Icon: PictureInPictureAltIcon}
 ];
 

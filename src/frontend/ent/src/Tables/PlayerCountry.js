@@ -60,7 +60,7 @@ function PlayerCountry() {
                 borderRadius: "1rem",
                 color: "white"
             }}>
-                <h2>Results <small>(PROC)</small></h2>
+                <h2>Results</h2>
                 {
                     procData ?
                     <ul>

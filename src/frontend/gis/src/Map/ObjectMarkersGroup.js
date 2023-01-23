@@ -55,7 +55,7 @@ const DEMO_DATA = [
 function ObjectMarkersGroup() {
 
     const map = useMap();
-    const [geom, setGeom] = useState([...DEMO_DATA]);
+    const [geom, setGeom] = useState([data]);
     const [bounds, setBounds] = useState(map.getBounds());
 
     /**
@@ -74,14 +74,18 @@ function ObjectMarkersGroup() {
 
     /* Updates the data for the current bounds */
     useEffect(() => {
-        console.log(`> getting data for bounds`, bounds);
-        setGeom(DEMO_DATA);
+        fetch('http://localhost:20002/api/markersJogadores')
+          .then(response => response.json())
+          .then(data => {
+            console.log(data);
+            setGeom(data)
+          });
     }, [bounds])
 
     return (
         <LayerGroup>
             {
-                geom.map(geoJSON => <ObjectMarker key={geoJSON.properties.id} geoJSON={geoJSON}/>)
+                geom.map(geoJSON => <ObjectMarker key={geoJSON.id} geoJSON={geoJSON}/>)
             }
         </LayerGroup>
     );
