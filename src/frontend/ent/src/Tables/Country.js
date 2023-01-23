@@ -25,6 +25,7 @@ function Countries() {
           .then(data => {
             let keys = ["id", "name"];
             let result = data.map(item => item.reduce((acc, val, i) => Object.assign(acc, { [keys[i]]: val }), {}));
+            result.sort((a, b) => a.id - b.id);
             console.log(result);
             setData(result);
             setMaxDataSize(result.length);

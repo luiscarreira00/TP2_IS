@@ -55,7 +55,7 @@ const DEMO_DATA = [
 function ObjectMarkersGroup() {
 
     const map = useMap();
-    const [geom, setGeom] = useState([data]);
+    const [geom, setGeom] = useState([DEMO_DATA]);
     const [bounds, setBounds] = useState(map.getBounds());
 
     /**
@@ -70,7 +70,7 @@ function ObjectMarkersGroup() {
         return () => {
             map.off('moveend', cb);
         }
-    }, []);
+    }, [map]);
 
     /* Updates the data for the current bounds */
     useEffect(() => {

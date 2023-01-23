@@ -14,6 +14,7 @@ function PlayerCountry() {
             .then(data => {
                 let keys = ["id", "name", "age", "overall", "country"];
                 let result = data.map(item => item.reduce((acc, val, i) => Object.assign(acc, { [keys[i]]: val }), {}));
+                result.sort((a, b) => a.id - b.id);
                 console.log(result);
                 setLista(result);
                 setProcData(null);

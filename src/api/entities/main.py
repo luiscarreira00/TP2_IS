@@ -7,20 +7,7 @@ from flask_cors import CORS
 
 from entities import Team
 
-#teste
-#from main import odd_even, add
-#import sys
-#import os 
-
-#dir_path = os.path.dirname(os.path.realpath("migrator"))
-# adding Folder_2 to the system path
-#sys.path.insert(0, dir_path+'/main.py')
-#print(dir_path+'/main.py')
-#fim teste
-
 PORT = int(sys.argv[1]) if len(sys.argv) >= 2 else 9000
-
-
 
 def print_psycopg2_exception(ex):
     # get details about the exception
@@ -135,24 +122,19 @@ def getPais():
             listaPais.append(result2)  
         return listaPais
 
-# set of all teams
-# !TODO: replace by database access
-teams = [
-]
-
 app = Flask(__name__)
 CORS(app)
 app.config["DEBUG"] = True
-
-@app.route('/api/getJogadorPais', methods=['GET'])
-def get_data2():
-    listaJogadores2=getJogadoresDePais()
-    return jsonify(listaJogadores2)
 
 @app.route('/api/getPais', methods=['GET'])
 def get_data1():
     listaPais=getPais()
     return jsonify(listaPais)
+
+@app.route('/api/getJogadorPais', methods=['GET'])
+def get_data2():
+    listaJogadores2=getJogadoresDePais()
+    return jsonify(listaJogadores2)
 
 @app.route('/api/data', methods=['GET'])
 def get_data():
