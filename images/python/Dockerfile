@@ -29,3 +29,4 @@ RUN pip install pycountry
 RUN pip install geojson
 RUN pip install shapely
 RUN pip install -U flask-cors
+RUN pip install geopy

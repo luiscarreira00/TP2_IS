@@ -1,10 +1,12 @@
 import sys
+import time
 import psycopg2
 from psycopg2 import OperationalError
 
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from geopy.geocoders import Nominatim
+import requests
 
 PORT = int(sys.argv[1]) if len(sys.argv) >= 2 else 9000
 
@@ -69,13 +71,25 @@ def getJogadoresDePais():
 
         keys = ["id", "name", "age", "overall", "country"]
         result = [{keys[i]: item[i] for i in range(len(keys))} for item in new_listaJogadores2]
-        result.sort(key=lambda x: x["id"])
+        #result.sort(key=lambda x: x["id"])
 
-        geolocator = Nominatim(user_agent="myGeocoder")
-
+        print("vai entrar no for")
         for player in result:
-            location = geolocator.geocode(player["country"])
-            player["coordinates"] = [location.latitude, location.longitude]
+            # Define the country name
+            country_name = player["country"]
+
+            # Make a request to the Nominatim API
+            url = f"https://nominatim.openstreetmap.org/search?q={country_name}&format=json"
+            response = requests.get(url)
+
+            # Parse the response
+            exe = response.json()
+
+            # Get the coordinates of the first result
+            latitude = exe[0]["lat"]
+            longitude = exe[0]["lon"]
+            player["coordinates"] = [latitude, longitude]
+
 
         return result
 
