@@ -48,13 +48,18 @@ if __name__ == "__main__":
             continue
 
         cur = db_dst.cursor()
+        cur1 = db_dst.cursor()
 
         print("Checking updates...")
 
        
         cur.execute("SELECT name FROM nationalities WHERE geom IS NULL LIMIT %s", (ENTITIES_PER_ITERATION,))
+        cur1.execute("SELECT name FROM nationalities WHERE lat IS NULL LIMIT %s", (ENTITIES_PER_ITERATION,))
 
         rows = cur.fetchall()
+        rows1 = cur1.fetchall()
+
+       
 
         # Iterate over the rows
         for row in rows:
@@ -110,6 +115,58 @@ if __name__ == "__main__":
                     cur.execute("UPDATE nationalities SET geom = ST_SetSRID(ST_GeomFromText(%s),4326), updated_on = NOW() WHERE name = %s", (wkt, str(row[0])))
                     db_dst.commit()
 
+        for row1 in rows1:
+            data1=None
+            if(str(row1[0])=="England" or str(row1[0])=="Scotland" or str(row1[0])=="Wales" or str(row1[0])=="Northern Ireland"): 
+                country = pycountry.countries.lookup("United Kingdom")
+                    
+            elif(str(row1[0])=="Korea Republic"):
+                country = pycountry.countries.lookup("Korea, Republic of")
+            elif(str(row1[0])=="Côte dIvoire"):
+                country = pycountry.countries.lookup("Côte d'Ivoire")
+            elif(str(row1[0])=="Russia"):
+                country = pycountry.countries.lookup("Russian Federation")
+            elif(str(row1[0])=="Congo DR"):
+                country = pycountry.countries.lookup("Congo")
+            elif(str(row1[0])=="China PR"):
+                country = pycountry.countries.lookup("China")
+            elif(str(row1[0])=="Iran"):
+                continue
+            elif(str(row1[0])=="Republic of Ireland"):
+                country = pycountry.countries.lookup("Ireland")
+            elif(str(row1[0])=="Cape Verde Islands"):
+                country = pycountry.countries.lookup("Cabo Verde")
+            elif(str(row1[0])=="Syria"):
+                country = pycountry.countries.lookup("Syrian Arab Republic")
+            elif(str(row1[0])=="Guinea Bissau"):
+                country = pycountry.countries.lookup("Guinea-Bissau")
+            elif(str(row1[0])=="Curacao"):
+                country = pycountry.countries.lookup("Curaçao")
+            elif(str(row1[0])=="Palestine"):
+                country = pycountry.countries.lookup("Palestine, State of")
+            elif(str(row1[0])=="Korea DPR"):
+                continue
+            elif(str(row1[0])=="Chinese Taipei"):
+                continue
+            elif(str(row1[0])=="Kosovo"):
+                continue
+            else:
+                country = pycountry.countries.lookup(str(row1[0]))
+            if(str(row1[0])!="Korea DPR" or "Chinese Taipei" or "Kosovo" or "Iran"):
+                url1 = f"https://nominatim.openstreetmap.org/search?country={country.alpha_2}&format=json"
+                response1 = requests.get(url1, headers=headers)
+
+                data1 = response1.json()
+                
+                if not data1:
+                    print(f"No data found for country {country}")
+                    continue
+
+                latitude = data1[0]["lat"]
+                longitude = data1[0]["lon"]
+
+                cur1.execute("UPDATE nationalities SET lat = %s, lon = %s, updated_on = NOW() WHERE name = %s", (latitude, longitude, str(row1[0])))
+                db_dst.commit()
 
         
         db_dst.close()

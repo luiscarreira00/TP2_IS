@@ -12,15 +12,15 @@ const LIST_PROPERTIES = [
 
 export function ObjectMarker({geoJSON}) {
     const properties = geoJSON?.properties
-    const {id, imgUrl, name} = properties;
+    const {name} = properties;
     const coordinates = geoJSON?.geometry?.coordinates;
 
     return (
         <Marker
             position={coordinates}
             icon={leafletIcon({
-                iconUrl: imgUrl,
-                iconRetinaUrl: imgUrl,
+                iconUrl: "https://cdn-icons-png.flaticon.com/512/805/805401.png",
+                iconRetinaUrl: "https://cdn-icons-png.flaticon.com/512/805/805401.png",
                 iconSize: point(50, 50),
             })}
         >
@@ -28,7 +28,7 @@ export function ObjectMarker({geoJSON}) {
                 <List dense={true}>
                     <ListItem>
                         <ListItemIcon>
-                            <Avatar alt={name} src={imgUrl}/>
+                            <Avatar alt={name} src={"https://cdn-icons-png.flaticon.com/512/805/805401.png"}/>
                         </ListItemIcon>
                         <ListItemText primary={name}/>
                     </ListItem>

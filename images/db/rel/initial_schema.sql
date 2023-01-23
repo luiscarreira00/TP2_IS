@@ -7,6 +7,8 @@ CREATE TABLE public.nationalities (
 	id              INT PRIMARY KEY,
 	name            VARCHAR(250) UNIQUE,
 	geom            GEOMETRY,
+	lat				Decimal(8,6),
+	lon 			Decimal(9,6),
 	created_on      TIMESTAMP NOT NULL DEFAULT NOW(),
 	updated_on      TIMESTAMP NOT NULL DEFAULT NOW()
 );

@@ -3,10 +3,11 @@ import {MapContainer, TileLayer} from 'react-leaflet';
 import ObjectMarkersGroup from "./ObjectMarkersGroup";
 
 function ObjectsMap() {
+    
     return (
         <MapContainer style={{width: "100%", height: "100vh"}}
                       center={[41.69462, -8.84679]}
-                      zoom={17}
+                      zoom={0}
                       scrollWheelZoom={false}
         >
             <TileLayer
