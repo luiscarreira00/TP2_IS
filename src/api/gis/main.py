@@ -5,6 +5,7 @@ from psycopg2 import OperationalError
 
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from flask_cors import cross_origin
 
 PORT = int(sys.argv[1]) if len(sys.argv) >= 2 else 9000
 
@@ -84,10 +85,26 @@ def getJogadoresDePais():
                     player["lat"] = country["lat"]
                     player["lon"] = country["lon"] 
 
-        return result
+        new_data = [
+        {
+            "type": "feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [(player["lat"]), (player["lon"])]
+            },
+            "properties": {
+                "id": player["id"],
+                "name": player["name"],
+                "country": player["country"]
+            }
+        } for player in result
+        ]
+
+        return new_data
 
 @app.route('/api/markersJogadores', methods=['GET'])
-def get_data3():
+@cross_origin()
+def markersJogadores():
     listaJogadores2=getJogadoresDePais()
     return jsonify(listaJogadores2)
 

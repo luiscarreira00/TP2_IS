@@ -12,7 +12,7 @@ const LIST_PROPERTIES = [
 
 export function ObjectMarker({geoJSON}) {
     const properties = geoJSON?.properties
-    const {name} = properties;
+    const {name, id, country} = properties;
     const coordinates = geoJSON?.geometry?.coordinates;
 
     return (
